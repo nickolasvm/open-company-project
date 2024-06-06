@@ -1,5 +1,6 @@
 import sqlite3
 import csv
+from prettytable import from_db_cursor
 from datetime import datetime
 
 
@@ -59,8 +60,13 @@ def fetch_by_date(conn, date_str):
     formatted_date = date_obj.strftime('%Y-%m-%d')
 
     cursor = conn.cursor()
-    select_query = "SELECT * FROM cias_abertas WHERE DATE(created_at) = ?"
+    select_query = '''
+    SELECT id, cnpj_cia, denom_social, sit
+    FROM cias_abertas
+    WHERE DATE(created_at) = ?
+    '''
     cursor.execute(select_query, (formatted_date,))
-    rows = cursor.fetchall()
-    for row in rows:
-        print(row)
+
+    table = from_db_cursor(cursor)
+    table.align['denom_social'] = 'l'
+    print(table)
