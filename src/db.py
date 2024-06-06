@@ -26,8 +26,8 @@ def initialize_database(conn):
 def insert_data_from_csv(conn, csv_file):
     cursor = conn.cursor()
 
-    with open(csv_file, mode='r', newline='') as file:
-        reader = csv.reader(file)
+    with open(csv_file, mode='r', newline='', encoding='iso-8859-1') as file:
+        reader = csv.reader(file, delimiter=';')
 
         header = next(reader)
 
@@ -44,7 +44,7 @@ def insert_data_from_csv(conn, csv_file):
             insert_query = '''
             INSERT INTO cias_abertas
             (cnpj_cia, denom_social, sit, created_at)
-            VALUES (?, ?, ?)
+            VALUES (?, ?, ?, ?)
             '''
             cursor.execute(
                 insert_query,
