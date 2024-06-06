@@ -9,9 +9,7 @@ def import_csv_to_database(conn):
 
 def fetch_results_by_date(conn):
     date_str = input('Insira uma data para pesquisar (DD/MM/YYYY): ')
-    rows = db.fetch_by_date(conn, date_str)
-    for row in rows:
-        print(row)
+    db.fetch_by_date(conn, date_str)
 
 
 def main():
