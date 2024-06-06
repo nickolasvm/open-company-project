@@ -1,11 +1,30 @@
 import db
+import os
+
+
+def delete_csv(csv_file):
+    os.remove(csv_file)
+    print('\nArquivo excluído com sucesso!')
 
 
 def import_csv_to_database(conn):
     try:
+        #  Import file
         csv_file = 'data/input/cad_cia_aberta.csv'
         db.insert_data_from_csv(conn, csv_file)
         print('\nArquivo importado com sucesso!')
+
+        #  Delete file after importing it
+        print('\n Deseja excluir o arquivo? (Recomendado) S/N')
+        choice = input('')
+
+        if choice == 's':
+            delete_csv(csv_file)
+        elif choice == 'n':
+            return
+        else:
+            print('\nEscolha inválida. Tente novamente.')
+
     except FileNotFoundError:
         print('''
         Arquivo .csv não encontrado!
