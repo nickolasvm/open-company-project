@@ -2,9 +2,14 @@ import db
 
 
 def import_csv_to_database(conn):
-    csv_file = 'data/input/cad_cia_aberta.csv'
-    db.insert_data_from_csv(conn, csv_file)
-    print('Arquivo importado com sucesso!')
+    try:
+        csv_file = 'data/input/cad_cia_aberta.csv'
+        db.insert_data_from_csv(conn, csv_file)
+        print('Arquivo importado com sucesso!')
+    except FileNotFoundError:
+        print('''
+              Arquivo .csv não encontrado!
+              Certifique-se que o arquivo existe na pasta "data/input"''')
 
 
 def fetch_results_by_date(conn):
