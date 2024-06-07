@@ -53,6 +53,13 @@ def fetch_results_by_date(conn):
         print('\nData inválida!')
 
 
+def fetch_results_by_cnpj(conn):
+    cnpj_str = input('\nDigite o CNPJ a ser pesquisado (apenas números): ')
+    if not cnpj_str.isdigit() or len(cnpj_str) != 14:
+        print('\nCNPJ inválido!')
+    db.fetch_by_cnpj(conn, cnpj_str)
+
+
 def main():
     # Check for directories
     create_directory()
@@ -66,8 +73,9 @@ def main():
     while True:
         print('\nSelecione uma das opções:\n')
         print('1. Importar arquivo .csv para o banco de dados')
-        print('2. Pesquisar cias por data')
-        print('3. Sair')
+        print('2. Pesquisar compnias por data')
+        print('3. Pesquisar compania por CNPJ')
+        print('4. Sair')
 
         choice = input('')
 
@@ -76,6 +84,8 @@ def main():
         elif choice == '2':
             fetch_results_by_date(conn)
         elif choice == '3':
+            fetch_results_by_cnpj(conn)
+        elif choice == '4':
             break
         else:
             print('\nEscolha inválida. Tente novamente.')

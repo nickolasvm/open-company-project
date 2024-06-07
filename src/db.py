@@ -86,6 +86,30 @@ def fetch_by_date(conn, date_str):
         paginate_table(table)
 
 
+def fetch_by_cnpj(conn, cnpj_str):
+    # Convert CNPJ to format XX.XXX.XXX/XXXX-XX
+    cnpj = format_cnpj(cnpj_str)
+
+    cursor = conn.cursor()
+    select_query = '''
+    SELECT cnpj_cia, denom_social, sit, created_at
+    FROM cias_abertas
+    WHERE cnpj_cia = ?
+    '''
+    try:
+        cursor.execute(select_query, (cnpj,))
+    except sqlite3.OperationalError as err:
+        print(f'Ocorreu um erro durante a query por data no banco: {err}')
+
+    table = from_db_cursor(cursor)
+    table.align['denom_social'] = 'l'
+
+    if len(table.rows) < 1:
+        print('\nNão existe dados para este CNPJ.')
+    else:
+        paginate_table(table)
+
+
 def paginate_table(table, page_size=100):
     total_rows = len(table.rows)
     #  Adding page_size - 1 ensures that the division will round up to the nearest integer
@@ -108,3 +132,13 @@ def paginate_table(table, page_size=100):
         if current_page > num_pages:
             print('Fim dos dados.')
             break
+
+
+def format_cnpj(cnpj_str):
+    # Split the string into segments
+    segments = [cnpj_str[:2], cnpj_str[2:5], cnpj_str[5:8], cnpj_str[8:12], cnpj_str[12:]]
+
+    # Join segments
+    formatted_cnpj = '{}.{}.{}/{}-{}'.format(*segments)
+
+    return formatted_cnpj
