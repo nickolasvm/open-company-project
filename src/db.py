@@ -32,31 +32,45 @@ def initialize_database(conn):
 def insert_data_from_csv(conn, csv_file):
     cursor = conn.cursor()
 
-    with open(csv_file, mode='r', newline='', encoding='iso-8859-1') as file:
-        reader = csv.reader(file, delimiter=';')
+    try:
+        with open(csv_file, mode='r', newline='', encoding='iso-8859-1') as file:
+            reader = csv.reader(file, delimiter=';')
 
-        header = next(reader)
+            try:
+                header = next(reader)
+            except StopIteration:
+                print("Arquivo .csv está vazio.")
+                return
 
-        # Find columns indexes
-        cnpj_cia_i = header.index("CNPJ_CIA")
-        denom_social_i = header.index("DENOM_SOCIAL")
-        sit_i = header.index("SIT")
+            # Find columns indexes
+            cnpj_cia_i = header.index("CNPJ_CIA")
+            denom_social_i = header.index("DENOM_SOCIAL")
+            sit_i = header.index("SIT")
 
-        for row in reader:
-            cnpj_cia = row[cnpj_cia_i]
-            denom_social = row[denom_social_i]
-            sit = row[sit_i]
-            created_at = datetime.now().strftime('%Y-%m-%d')
-            insert_query = '''
-            INSERT INTO cias_abertas
-            (cnpj_cia, denom_social, sit, created_at)
-            VALUES (?, ?, ?, ?)
-            '''
-            cursor.execute(
-                insert_query,
-                (cnpj_cia, denom_social, sit, created_at))
+            for row in reader:
+                cnpj_cia = row[cnpj_cia_i]
+                denom_social = row[denom_social_i]
+                sit = row[sit_i]
+                created_at = datetime.now().strftime('%Y-%m-%d')
+                insert_query = '''
+                INSERT INTO cias_abertas
+                (cnpj_cia, denom_social, sit, created_at)
+                VALUES (?, ?, ?, ?)
+                '''
+                cursor.execute(
+                    insert_query,
+                    (cnpj_cia, denom_social, sit, created_at))
 
-    conn.commit()
+        conn.commit()
+
+    except IOError as e:
+        print(f"Erro ao abrir arquivo {csv_file}: {e}")
+    except sqlite3.DatabaseError as e:
+        print(f"Erro com o banco de dados: {e}")
+    except Exception as e:
+        print(f"Erro inesperado : {e}")
+    finally:
+        cursor.close()
 
 
 def fetch_by_date(conn, date_str):
