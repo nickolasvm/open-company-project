@@ -13,9 +13,9 @@ def initialize_database(conn):
     create_table_query = '''
     CREATE TABLE IF NOT EXISTS cias_abertas (
         id INTEGER PRIMARY KEY,
-        cnpj_cia TEXT NOT NULL,
-        denom_social TEXT NOT NULL,
-        sit TEXT NOT NULL,
+        cnpj_cia TEXT,
+        denom_social TEXT,
+        sit TEXT,
         created_at DATE NOT NULL
     );
     '''
