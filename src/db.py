@@ -83,4 +83,29 @@ def fetch_by_date(conn, date_str):
     if len(table.rows) < 1:
         print('\nNão existe dados para a data informada.')
     else:
-        print(table)
+        paginate_table(table)
+
+
+def paginate_table(table, page_size=100):
+    total_rows = len(table.rows)
+    #  Adding page_size - 1 ensures that the division will round up to the nearest integer
+    num_pages = (total_rows + page_size - 1) // page_size
+    print(num_pages)
+    current_page = 1
+
+    while True:
+        print('\n')
+        start_index = (current_page - 1) * page_size
+        end_index = min(total_rows, current_page * page_size)
+
+        print(table.get_string(start=start_index, end=end_index))
+
+        print(f'\nPágina {current_page}/{num_pages}')
+
+        user_input = input('Pressione Enter para continuar à próxima página (ou "q" para sair): ')
+        if user_input.lower() == 'q':
+            break
+        current_page += 1
+        if current_page > num_pages:
+            print('Fim dos dados.')
+            break
