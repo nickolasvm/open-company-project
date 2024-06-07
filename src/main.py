@@ -30,7 +30,7 @@ def import_csv_to_database(conn):
         print('\nDeseja excluir o arquivo? (Recomendado) S/N')
         choice = input('')
 
-        while choice.lower() not in ["s", "n"]:
+        while choice.lower() not in ['s', 'n']:
             print('\nEscolha inválida. Tente novamente.')
             print('\nDeseja excluir o arquivo? (Recomendado) S/N')
             choice = input('')
@@ -50,7 +50,7 @@ def fetch_results_by_date(conn):
         date_str = input('\nInsira uma data para pesquisar (DD/MM/YYYY): ')
         db.fetch_by_date(conn, date_str)
     except ValueError:
-        print("\nData inválida!")
+        print('\nData inválida!')
 
 
 def main():

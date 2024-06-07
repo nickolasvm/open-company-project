@@ -37,9 +37,9 @@ def insert_data_from_csv(conn, csv_file):
         header = next(reader)
 
         # Find columns indexes
-        cnpj_cia_i = header.index("CNPJ_CIA")
-        denom_social_i = header.index("DENOM_SOCIAL")
-        sit_i = header.index("SIT")
+        cnpj_cia_i = header.index('CNPJ_CIA')
+        denom_social_i = header.index('DENOM_SOCIAL')
+        sit_i = header.index('SIT')
 
         for row in reader:
             cnpj_cia = row[cnpj_cia_i]
@@ -56,7 +56,7 @@ def insert_data_from_csv(conn, csv_file):
                     insert_query,
                     (cnpj_cia, denom_social, sit, created_at))
             except sqlite3.OperationalError as err:
-                print(f"Aconteceu um erro durante a inserção de dados no banco: {err}")
+                print(f'Aconteceu um erro durante a inserção de dados no banco: {err}')
 
     conn.commit()
 
@@ -75,7 +75,7 @@ def fetch_by_date(conn, date_str):
     try:
         cursor.execute(select_query, (formatted_date,))
     except sqlite3.OperationalError as err:
-        print(f"Ocorreu um erro durante a query por data no banco: {err}")
+        print(f'Ocorreu um erro durante a query por data no banco: {err}')
 
     table = from_db_cursor(cursor)
     table.align['denom_social'] = 'l'
