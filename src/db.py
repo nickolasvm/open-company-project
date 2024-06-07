@@ -112,6 +112,12 @@ def fetch_by_cnpj(conn, cnpj_str):
 
 def paginate_table(table, page_size=100):
     total_rows = len(table.rows)
+
+    # Don't need to paginate if there is less rows than page size
+    if (total_rows < page_size):
+        print(table)
+        return
+
     #  Adding page_size - 1 ensures that the division will round up to the nearest integer
     num_pages = (total_rows + page_size - 1) // page_size
     current_page = 1
