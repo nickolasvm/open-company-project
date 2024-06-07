@@ -20,7 +20,12 @@ def initialize_database(conn):
     );
     '''
     cursor = conn.cursor()
-    cursor.execute(create_table_query)
+    try:
+        cursor.execute(create_table_query)
+    except sqlite3.OperationalError as err:
+        print(f'''
+              Aconteceu um erro durante a criação da tabela
+              de companhias abertas no banco: {err}''')
     conn.commit()
 
 
