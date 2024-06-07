@@ -1,7 +1,18 @@
 import db
 import os
 
-CSV_FILE_PATH = 'data/input/cad_cia_aberta.csv'
+DB_PATH = 'data/db'
+CSV_PATH = 'data/input'
+CSV_FILE_PATH = f'{CSV_PATH}/cad_cia_aberta.csv'
+
+
+def create_directory():
+    # Create directory if it does not exist
+    if not os.path.exists(DB_PATH):
+        os.makedirs(DB_PATH)
+
+    if not os.path.exists(CSV_PATH):
+        os.makedirs(CSV_PATH)
 
 
 def delete_csv():
@@ -43,8 +54,11 @@ def fetch_results_by_date(conn):
 
 
 def main():
+    # Check for directories
+    create_directory()
+
     # Create connection
-    conn = db.create_connection('data/db/database.db')
+    conn = db.create_connection(f'{DB_PATH}/database.db')
 
     #  Initialize database
     db.initialize_database(conn)
