@@ -57,7 +57,8 @@ def fetch_results_by_cnpj(conn):
     cnpj_str = input('\nDigite o CNPJ a ser pesquisado (apenas números): ')
     if not cnpj_str.isdigit() or len(cnpj_str) != 14:
         print('\nCNPJ inválido!')
-    db.fetch_by_cnpj(conn, cnpj_str)
+    else:
+        db.fetch_by_cnpj(conn, cnpj_str)
 
 
 def main():
