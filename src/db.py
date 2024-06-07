@@ -84,7 +84,10 @@ def fetch_by_date(conn, date_str):
     FROM cias_abertas
     WHERE DATE(created_at) = ?
     '''
-    cursor.execute(select_query, (formatted_date,))
+    try:
+        cursor.execute(select_query, (formatted_date,))
+    except sqlite3.OperationalError as err:
+        print(f"Ocorreu um erro durante a query por data no banco: {err}")
 
     table = from_db_cursor(cursor)
     table.align['denom_social'] = 'l'
