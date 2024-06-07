@@ -90,7 +90,6 @@ def paginate_table(table, page_size=100):
     total_rows = len(table.rows)
     #  Adding page_size - 1 ensures that the division will round up to the nearest integer
     num_pages = (total_rows + page_size - 1) // page_size
-    print(num_pages)
     current_page = 1
 
     while True:
