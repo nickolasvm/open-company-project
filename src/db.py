@@ -79,4 +79,8 @@ def fetch_by_date(conn, date_str):
 
     table = from_db_cursor(cursor)
     table.align['denom_social'] = 'l'
-    print(table)
+
+    if len(table.rows) < 1:
+        print('\nNão existe dados para a data informada.')
+    else:
+        print(table)
