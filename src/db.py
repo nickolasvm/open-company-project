@@ -2,7 +2,7 @@ import sqlite3
 import pandas as pd
 from prettytable import from_db_cursor
 from datetime import datetime
-from utils import paginate_table, format_cnpj
+from src.utils import paginate_table, format_cnpj
 
 
 def create_connection(db_file):
