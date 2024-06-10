@@ -43,7 +43,7 @@ def insert_data_from_csv(conn, csv_file):
     VALUES (?, ?, ?, ?)
     '''
 
-    for row in df.iterrows():
+    for index, row in df.iterrows():
         try:
             cursor.execute(insert_query, (row['CNPJ_CIA'], row['DENOM_SOCIAL'], row['SIT'], row['created_at']))
         except sqlite3.OperationalError as err:
