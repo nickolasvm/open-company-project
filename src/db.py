@@ -33,7 +33,7 @@ def initialize_database(conn):
 def insert_data_from_csv(conn, csv_file):
     df = pd.read_csv(csv_file, delimiter=';', encoding='iso-8859-1')
     df = df[['CNPJ_CIA', 'DENOM_SOCIAL', 'SIT']]
-    # Delete duplicates
+    # Deleta duplicados
     df = df.drop_duplicates(subset=['CNPJ_CIA', 'DENOM_SOCIAL', 'SIT'])
     df['created_at'] = datetime.now().strftime('%Y-%m-%d')
 
@@ -44,7 +44,7 @@ def insert_data_from_csv(conn, csv_file):
     VALUES (?, ?, ?, ?)
     '''
 
-    for index, row in df.iterrows():
+    for _, row in df.iterrows():
         try:
             cursor.execute(insert_query, (row['CNPJ_CIA'], row['DENOM_SOCIAL'], row['SIT'], row['created_at']))
         except sqlite3.OperationalError as err:
@@ -54,7 +54,7 @@ def insert_data_from_csv(conn, csv_file):
 
 
 def fetch_by_date(conn, date_str):
-    # Convert date string to object
+    # Converte a string de data em objeto
     date_obj = datetime.strptime(date_str, '%d/%m/%Y')
     formatted_date = date_obj.strftime('%Y-%m-%d')
 
@@ -79,7 +79,7 @@ def fetch_by_date(conn, date_str):
 
 
 def fetch_by_cnpj(conn, cnpj_str):
-    # Convert CNPJ to format XX.XXX.XXX/XXXX-XX
+    # Converte CNPJ para formato XX.XXX.XXX/XXXX-XX
     cnpj = format_cnpj(cnpj_str)
 
     cursor = conn.cursor()

@@ -1,12 +1,12 @@
 def paginate_table(table, page_size=100):
     total_rows = len(table.rows)
 
-    # Don't need to paginate if there is less rows than page size
+    # Mostra tabela inteira caso haja menos linhas que page_size
     if (total_rows < page_size):
         print(table)
         return
 
-    #  Adding page_size - 1 ensures that the division will round up to the nearest integer
+    #  Incluindo page_size - 1 garante que a divisão vai arredondar para o número mais próximo
     num_pages = (total_rows + page_size - 1) // page_size
     current_page = 1
 
@@ -29,10 +29,10 @@ def paginate_table(table, page_size=100):
 
 
 def format_cnpj(cnpj_str):
-    # Split the string into segments
+    # Quebra a string em segmentos
     segments = [cnpj_str[:2], cnpj_str[2:5], cnpj_str[5:8], cnpj_str[8:12], cnpj_str[12:]]
 
-    # Join segments
+    # Junta os segmentos
     formatted_cnpj = '{}.{}.{}/{}-{}'.format(*segments)
 
     return formatted_cnpj

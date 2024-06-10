@@ -7,7 +7,7 @@ CSV_FILE_PATH = f'{CSV_PATH}/cad_cia_aberta.csv'
 
 
 def create_directory():
-    # Create directory if it does not exist
+    # Cria diretório caso não exista
     if not os.path.exists(DB_PATH):
         os.makedirs(DB_PATH)
 
@@ -22,11 +22,11 @@ def delete_csv():
 
 def import_csv_to_database(conn):
     try:
-        #  Import file
+        #  Importa arquivo
         db.insert_data_from_csv(conn, CSV_FILE_PATH)
         print('\nArquivo importado com sucesso!')
 
-        #  Delete file after importing it
+        #  Deleta arquivo após importação
         print('\nDeseja excluir o arquivo? (Recomendado) S/N')
         choice = input('')
 
@@ -41,7 +41,7 @@ def import_csv_to_database(conn):
     except FileNotFoundError:
         print('''
         Arquivo .csv não encontrado!
-        Certifique-se que o arquivo existe na pasta "data/input"
+        Certifique-se de que o arquivo exista na pasta "data/input"
         ''')
 
 
@@ -62,20 +62,20 @@ def fetch_results_by_cnpj(conn):
 
 
 def main():
-    # Check for directories
+    # Checa existência das pastas
     create_directory()
 
-    # Create connection
+    # Cria conexão com o banco
     conn = db.create_connection(f'{DB_PATH}/database.db')
 
-    #  Initialize database
+    # Inicializa o banco
     db.initialize_database(conn)
 
     while True:
         print('\nSelecione uma das opções:\n')
         print('1. Importar arquivo .csv para o banco de dados')
-        print('2. Pesquisar compnias por data')
-        print('3. Pesquisar compania por CNPJ')
+        print('2. Pesquisar empresas por data')
+        print('3. Pesquisar empresa por CNPJ')
         print('4. Sair')
 
         choice = input('')
@@ -91,7 +91,7 @@ def main():
         else:
             print('\nEscolha inválida. Tente novamente.')
 
-    # Close connection
+    # Fecha conexão
     conn.close()
 
 
