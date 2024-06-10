@@ -1,4 +1,4 @@
-import db
+import src.db as db
 import os
 
 DB_PATH = 'data/db'
