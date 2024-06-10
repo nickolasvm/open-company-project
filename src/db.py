@@ -1,5 +1,5 @@
 import sqlite3
-import csv
+import pandas as pd
 from prettytable import from_db_cursor
 from datetime import datetime
 
@@ -30,33 +30,24 @@ def initialize_database(conn):
 
 
 def insert_data_from_csv(conn, csv_file):
+    df = pd.read_csv(csv_file, delimiter=';', encoding='iso-8859-1')
+    df = df[['CNPJ_CIA', 'DENOM_SOCIAL', 'SIT']]
+    # Delete duplicates
+    df = df.drop_duplicates(subset=['CNPJ_CIA', 'DENOM_SOCIAL', 'SIT'])
+    df['created_at'] = datetime.now().strftime('%Y-%m-%d')
+
     cursor = conn.cursor()
-    with open(csv_file, mode='r', newline='', encoding='iso-8859-1') as file:
-        reader = csv.reader(file, delimiter=';')
+    insert_query = '''
+    INSERT INTO cias_abertas
+    (cnpj_cia, denom_social, sit, created_at)
+    VALUES (?, ?, ?, ?)
+    '''
 
-        header = next(reader)
-
-        # Find columns indexes
-        cnpj_cia_i = header.index('CNPJ_CIA')
-        denom_social_i = header.index('DENOM_SOCIAL')
-        sit_i = header.index('SIT')
-
-        for row in reader:
-            cnpj_cia = row[cnpj_cia_i]
-            denom_social = row[denom_social_i]
-            sit = row[sit_i]
-            created_at = datetime.now().strftime('%Y-%m-%d')
-            insert_query = '''
-            INSERT INTO cias_abertas
-            (cnpj_cia, denom_social, sit, created_at)
-            VALUES (?, ?, ?, ?)
-            '''
-            try:
-                cursor.execute(
-                    insert_query,
-                    (cnpj_cia, denom_social, sit, created_at))
-            except sqlite3.OperationalError as err:
-                print(f'Aconteceu um erro durante a inserção de dados no banco: {err}')
+    for row in df.iterrows():
+        try:
+            cursor.execute(insert_query, (row['CNPJ_CIA'], row['DENOM_SOCIAL'], row['SIT'], row['created_at']))
+        except sqlite3.OperationalError as err:
+            print(f'Aconteceu um erro durante a inserção de dados no banco: {err}')
 
     conn.commit()
 
