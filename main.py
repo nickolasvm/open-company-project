@@ -45,10 +45,15 @@ def import_csv_to_database(conn):
         ''')
 
 
-def fetch_results_by_date(conn):
+def fetch_results_by_date(conn, filter):
     try:
         date_str = input('\nInsira uma data para pesquisar (DD/MM/YYYY): ')
-        db.fetch_by_date(conn, date_str)
+        if filter == '1':
+            db.fetch_by_date(conn, date_str, 'ATIVO')
+        elif filter == '2':
+            db.fetch_by_date(conn, date_str, 'CANCELADA')
+        else:
+            db.fetch_by_date(conn, date_str)
     except ValueError:
         print('\nData inválida!')
 
@@ -83,7 +88,17 @@ def main():
         if choice == '1':
             import_csv_to_database(conn)
         elif choice == '2':
-            fetch_results_by_date(conn)
+            print('\nFiltrar por:\n')
+            print('1. Empresas ativas')
+            print('2. Empresas canceladas')
+            print('3. Todas as empresas')
+
+            filter = input('')
+            while filter not in ['1', '2', '3']:
+                print('\nEscolha inválida. Tente novamente.')
+                filter = input('')
+
+            fetch_results_by_date(conn, filter)
         elif choice == '3':
             fetch_results_by_cnpj(conn)
         elif choice == '4':

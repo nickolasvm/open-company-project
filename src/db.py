@@ -53,7 +53,7 @@ def insert_data_from_csv(conn, csv_file):
     conn.commit()
 
 
-def fetch_by_date(conn, date_str):
+def fetch_by_date(conn, date_str, sit_filter=None):
     # Converte a string de data em objeto
     date_obj = datetime.strptime(date_str, '%d/%m/%Y')
     formatted_date = date_obj.strftime('%Y-%m-%d')
@@ -64,8 +64,16 @@ def fetch_by_date(conn, date_str):
     FROM cias_abertas
     WHERE DATE(created_at) = ?
     '''
+
+    # Adiciona filtro
+    if sit_filter:
+        select_query += ' AND sit = ?'
+        query_params = (formatted_date, sit_filter)
+    else:
+        query_params = (formatted_date,)
+
     try:
-        cursor.execute(select_query, (formatted_date,))
+        cursor.execute(select_query, query_params)
     except sqlite3.OperationalError as err:
         print(f'Ocorreu um erro durante a query por data no banco: {err}')
 
