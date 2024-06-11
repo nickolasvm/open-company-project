@@ -83,28 +83,27 @@ def main():
         print('3. Pesquisar empresa por CNPJ')
         print('4. Sair')
 
-        choice = input('')
+        match input(''):
+            case '1':
+                import_csv_to_database(conn)
+            case '2':
+                print('\nFiltrar por:\n')
+                print('1. Empresas ativas')
+                print('2. Empresas canceladas')
+                print('3. Todas as empresas')
 
-        if choice == '1':
-            import_csv_to_database(conn)
-        elif choice == '2':
-            print('\nFiltrar por:\n')
-            print('1. Empresas ativas')
-            print('2. Empresas canceladas')
-            print('3. Todas as empresas')
-
-            filter = input('')
-            while filter not in ['1', '2', '3']:
-                print('\nEscolha inválida. Tente novamente.')
                 filter = input('')
+                while filter not in ['1', '2', '3']:
+                    print('\nEscolha inválida. Tente novamente.')
+                    filter = input('')
 
-            fetch_results_by_date(conn, filter)
-        elif choice == '3':
-            fetch_results_by_cnpj(conn)
-        elif choice == '4':
-            break
-        else:
-            print('\nEscolha inválida. Tente novamente.')
+                fetch_results_by_date(conn, filter)
+            case '3':
+                fetch_results_by_cnpj(conn)
+            case '4':
+                break
+            case _:
+                print('\nEscolha inválida. Tente novamente.')
 
     # Fecha conexão
     conn.close()
