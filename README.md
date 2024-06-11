@@ -32,8 +32,19 @@ As informações sobre as companhias são públicas e podem ser baixadas no segu
   ```
 
   3. Crie o ambiente virtual para o projeto
+  * <strong>Linux / macOS</strong>
   ```bash
   python3 -m venv .venv && source .venv/bin/activate
+  ```
+  * <strong>Windows (PowerShell)</strong>
+  ```bash
+  python3 -m venv .venv
+  .\.venv\Scripts\Activate.ps1
+  ```
+  * <strong>Windows (cmd)</strong>
+  ```bash
+  python3 -m venv .venv
+  .\.venv\Scripts\activate
   ```
   
   4. Instale as dependências
