@@ -64,7 +64,7 @@ As informações sobre as companhias são públicas e podem ser baixadas no segu
   
   2. Ao iniciar, será criado uma pasta data/input. Baixe o arquivo de dados neste [link](https://dados.gov.br/dados/conjuntos-dados/cias-abertas-informao-cadastral) e mova-o para a pasta criada
   ```bash
-  project_root/
+  sparta-python-project/
   ├── main.py
   ├── data/
   │   ├── database/
